@@ -31,9 +31,20 @@ public class Player {
     public void buyProduct(String productName, int cost, int amount) {
         if(inventories.containsKey(productName)) {
             Inventory inventory = inventories.get(productName);
-            inventory.update(cost, amount);
+            inventory.buy(cost, amount);
         } else {
             inventories.put(productName, new Inventory(productName, cost, amount));
+        }
+    }
+
+    public void sellProduct(String productName, int price, int amount) {
+        Inventory inventory = inventories.get(productName);
+        if(amount >= inventory.amount) {
+            this.cash += inventory.amount * price;
+            inventories.remove(productName);
+        } else {
+            this.cash += amount * price;
+            inventory.amount -= amount;
         }
     }
 }
